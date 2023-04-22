@@ -24,11 +24,11 @@ export const Tweets = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <BackButton text="Back to Home" />{' '}
       {error && 'Error, please reload the page'}
       {isLoading && 'Loading, please wait'}
       <UsersList users={users} />
-    </div>
+    </>
   );
 };

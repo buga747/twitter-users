@@ -6,26 +6,34 @@ import { updateUser } from 'services/TweetsApi';
 
 export function UsersListItem({ user }) {
   const [twitterUser, setTwitterUser] = useState(user);
+  const { id, followers, name, tweets, avatar } = twitterUser;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(
+    JSON.parse(localStorage.getItem(`isFollowing-${id}`)) || false
+  );
 
-  const handleClick = evt => {
-    const button = evt.target;
-
-    if (button.name.toLowerCase() === 'follow') {
-      button.name = 'following';
-      button.textContent = 'Following';
+  const handleFollowClick = () => {
+    if (!isFollowing) {
       setTwitterUser(prev => ({
         ...prev,
         followers: prev.followers + 1,
       }));
-    } else if (button.name.toLowerCase() === 'following') {
-      button.name = 'follow';
-      button.textContent = 'Follow';
+      setIsFollowing(true);
+      localStorage.setItem(
+        `isFollowing-${twitterUser.id}`,
+        JSON.stringify(true)
+      );
+    } else {
       setTwitterUser(prev => ({
         ...prev,
         followers: prev.followers - 1,
       }));
+      setIsFollowing(false);
+      localStorage.setItem(
+        `isFollowing-${twitterUser.id}`,
+        JSON.stringify(false)
+      );
     }
 
     const updateData = async () => {
@@ -44,8 +52,10 @@ export function UsersListItem({ user }) {
     <Item>
       <Logo src={logo} alt="logo" width="76" />
       <img src={image} alt="bg-img" width="308" />
-      <p> {twitterUser.name}</p>
-      <p> {twitterUser.followers}</p>
+      <p> {name}</p>
+      <p> {followers}</p>
+      <p> {tweets}</p>
+      <img src={avatar} alt={name} />
       {error ? (
         <p>Error</p>
       ) : (
@@ -53,9 +63,9 @@ export function UsersListItem({ user }) {
           type="button"
           disabled={isLoading}
           name="follow"
-          onClick={handleClick}
+          onClick={handleFollowClick}
         >
-          Follow
+          {isFollowing ? 'Following' : 'Follow'}
         </button>
       )}
     </Item>
