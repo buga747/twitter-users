@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
-import { Item, Logo } from './UserListItem.styled';
-import image from '../../assets/images/bg-img.png';
+import React, { useState, useEffect } from 'react';
+import {
+  AvatarWrapper,
+  FollowButton,
+  InfoText,
+  InfoWrapper,
+  Item,
+  Logo,
+} from './UserListItem.styled';
 import logo from '../../assets/images/logo.png';
+import image from '../../assets/images/bg-img.png';
 import { updateUser } from 'services/TweetsApi';
+import { addCommasToNumber } from 'utils/addCommasToNumber';
 
-export function UsersListItem({ user }) {
-  const [twitterUser, setTwitterUser] = useState(user);
+export function UsersListItem({ twiUser }) {
+  const [twitterUser, setTwitterUser] = useState(twiUser);
   const { id, followers, name, tweets, avatar } = twitterUser;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isFollowing, setIsFollowing] = useState(
     JSON.parse(localStorage.getItem(`isFollowing-${id}`)) || false
   );
+  const followersString = addCommasToNumber(followers);
+
+  useEffect(() => {
+    localStorage.setItem(`isFollowing-${id}`, JSON.stringify(isFollowing));
+  }, [id, isFollowing]);
 
   const handleFollowClick = () => {
     if (!isFollowing) {
@@ -20,20 +33,12 @@ export function UsersListItem({ user }) {
         followers: prev.followers + 1,
       }));
       setIsFollowing(true);
-      localStorage.setItem(
-        `isFollowing-${twitterUser.id}`,
-        JSON.stringify(true)
-      );
     } else {
       setTwitterUser(prev => ({
         ...prev,
         followers: prev.followers - 1,
       }));
       setIsFollowing(false);
-      localStorage.setItem(
-        `isFollowing-${twitterUser.id}`,
-        JSON.stringify(false)
-      );
     }
 
     const updateData = async () => {
@@ -48,25 +53,30 @@ export function UsersListItem({ user }) {
     };
     updateData();
   };
+
   return (
     <Item>
       <Logo src={logo} alt="logo" width="76" />
       <img src={image} alt="bg-img" width="308" />
-      <p> {name}</p>
-      <p> {followers}</p>
-      <p> {tweets}</p>
-      <img src={avatar} alt={name} />
+      <AvatarWrapper>
+        <img src={avatar} alt={name} width="62" />
+      </AvatarWrapper>
+      <InfoWrapper>
+        <InfoText> {tweets} tweets</InfoText>
+        <InfoText> {followersString} followers</InfoText>
+      </InfoWrapper>{' '}
       {error ? (
         <p>Error</p>
       ) : (
-        <button
+        <FollowButton
           type="button"
           disabled={isLoading}
           name="follow"
           onClick={handleFollowClick}
+          isFollowing={isFollowing}
         >
           {isFollowing ? 'Following' : 'Follow'}
-        </button>
+        </FollowButton>
       )}
     </Item>
   );

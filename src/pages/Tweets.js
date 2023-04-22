@@ -3,6 +3,12 @@ import { getUsers } from 'services/TweetsApi';
 import { BackButton } from 'components/BackButton/BackButton';
 import { UsersList } from 'components/UsersList/UsersList';
 
+// const statusFilters = {
+//   all: 'all',
+//   followed: 'followed',
+//   notFollowed: 'notFollowed',
+// };
+
 export const Tweets = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
