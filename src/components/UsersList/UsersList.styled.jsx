@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   text-align: center;
   margin-bottom: 20px;
+  margin-top: 30px;
 `;
 
 export const List = styled.ul`
@@ -11,7 +12,6 @@ export const List = styled.ul`
   justify-content: center;
   align-items: center;
   gap: 20px;
-  margin-top: 30px;
 `;
 
 export const LoadMoreBtnStyled = styled.button`
