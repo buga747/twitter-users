@@ -36,7 +36,7 @@ const Description = styled.span`
   text-transform: uppercase;
 `;
 
-export const Home = () => {
+const Home = () => {
   return (
     <HomeContainer>
       <Title>Welcome to our Twitter Users site!</Title>
@@ -45,3 +45,5 @@ export const Home = () => {
     </HomeContainer>
   );
 };
+
+export default Home;

@@ -1,9 +1,10 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import Theme from './Theme/Theme';
 import { Routes, Route } from 'react-router-dom';
 import { SharedLayout } from './SharedLayout/SharedLayout';
-import { Home } from 'pages/Home';
-import { Tweets } from 'pages/Tweets';
+
+const Home = lazy(() => import('../pages/Home'));
+const Tweets = lazy(() => import('../pages/Tweets'));
 
 export const App = () => {
   return (

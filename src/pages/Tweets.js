@@ -10,7 +10,7 @@ import Skeleton from 'components/Skeleton/Skeleton';
 //   notFollowed: 'notFollowed',
 // };
 
-export const Tweets = () => {
+const Tweets = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -41,3 +41,5 @@ export const Tweets = () => {
     </>
   );
 };
+
+export default Tweets;

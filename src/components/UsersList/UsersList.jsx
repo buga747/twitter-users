@@ -1,6 +1,7 @@
 import { UsersListItem } from 'components/UsersListItem/UsersListItem';
 import React, { useEffect, useState } from 'react';
 import { List, LoadMoreBtnStyled, Wrapper } from './UsersList.styled';
+import PropTypes from 'prop-types';
 
 export function UsersList({ users }) {
   const [usersToShow, setUsersToShow] = useState(null);
@@ -24,6 +25,7 @@ export function UsersList({ users }) {
       setShowLoadMore(false);
     }
   };
+
   return (
     <Wrapper>
       {usersToShow && (
@@ -41,3 +43,11 @@ export function UsersList({ users }) {
     </Wrapper>
   );
 }
+
+UsersList.propTypes = {
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};

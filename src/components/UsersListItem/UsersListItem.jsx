@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   AvatarWrapper,
   FollowButton,
@@ -14,7 +15,7 @@ import { addCommasToNumber } from 'utils/addCommasToNumber';
 
 export function UsersListItem({ twiUser }) {
   const [twitterUser, setTwitterUser] = useState(twiUser);
-  const { id, followers, name, tweets, avatar } = twitterUser;
+  const { id, followers, user, tweets, avatar } = twitterUser;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isFollowing, setIsFollowing] = useState(
@@ -59,7 +60,7 @@ export function UsersListItem({ twiUser }) {
       <Logo src={logo} alt="logo" width="76" />
       <img src={image} alt="bg-img" width="308" />
       <AvatarWrapper>
-        <img src={avatar} alt={name} width="62" />
+        <img src={avatar} alt={user} width="62" />
       </AvatarWrapper>
       <InfoWrapper>
         <InfoText> {tweets} tweets</InfoText>
@@ -81,3 +82,13 @@ export function UsersListItem({ twiUser }) {
     </Item>
   );
 }
+
+UsersListItem.propTypes = {
+  twiUser: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    followers: PropTypes.number.isRequired,
+    user: PropTypes.string.isRequired,
+    tweets: PropTypes.number.isRequired,
+    avatar: PropTypes.string.isRequired,
+  }).isRequired,
+};
