@@ -33,8 +33,7 @@ export const Tweets = () => {
     <>
       <BackButton text="Back to Home" />{' '}
       {error && 'Error, please reload the page'}
-      {isLoading && 'Loading, please wait'}
-      <UsersList users={users} />
+      {isLoading ? 'Loading, please wait' : <UsersList users={users} />}
     </>
   );
 };

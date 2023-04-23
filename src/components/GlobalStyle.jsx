@@ -8,6 +8,26 @@ export const GlobalStyle = createGlobalStyle`
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+background: linear-gradient(-45deg, #f7b9a9, #a4f4ec, #96c7e4, #a4ebc8);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 100vh;
+}
+
+
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
