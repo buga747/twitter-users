@@ -10,29 +10,29 @@ import {
 } from './UserListItem.styled';
 import logo from '../../assets/images/logo.png';
 import image from '../../assets/images/bg-img.png';
-import { updateUser } from 'services/TweetsApi';
 import { addCommasToNumber } from 'utils/addCommasToNumber';
 import { TailSpin } from 'react-loader-spinner';
 
-export function UsersListItem({ twiUser }) {
-  const [twitterUser, setTwitterUser] = useState(twiUser);
-  const { followers, user, tweets, avatar, isFollowed } = twitterUser;
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+export function UsersListItem({ twiUser, handleFollowClick }) {
+  const { followers, user, tweets, avatar, isFollowed } = twiUser;
   const followersString = addCommasToNumber(followers);
+  const [error, setError] = useState(false);
 
-  const handleFollowClick = async () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = async () => {
+    setIsLoading(true);
+
     const updatedUser = {
-      ...twitterUser,
+      ...twiUser,
       followers: isFollowed ? followers - 1 : followers + 1,
       isFollowed: !isFollowed,
     };
-    setIsLoading(true);
+
     try {
-      await updateUser(updatedUser);
-      setTwitterUser(updatedUser);
-    } catch (e) {
-      setError(true);
+      await handleFollowClick(updatedUser);
+    } catch (error) {
+      setError(error);
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +53,7 @@ export function UsersListItem({ twiUser }) {
         type="button"
         disabled={isLoading}
         name="follow"
-        onClick={handleFollowClick}
+        onClick={handleClick}
         isFollowing={isFollowed}
       >
         {isLoading ? (

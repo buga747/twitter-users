@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const HomeContainer = styled.div`
+export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,13 +9,13 @@ const HomeContainer = styled.div`
   height: 100vh;
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   font-size: 3rem;
   margin-bottom: 1rem;
   color: #333;
 `;
 
-const DiscoverLink = styled(Link)`
+export const DiscoverLink = styled(Link)`
   background-color: #1da1f2;
   color: #fff;
   font-size: 1.5rem;
@@ -29,21 +29,9 @@ const DiscoverLink = styled(Link)`
   }
 `;
 
-const Description = styled.span`
+export const Description = styled.span`
   font-size: 1.5rem;
   color: #666;
   margin-top: 1rem;
   text-transform: uppercase;
 `;
-
-const Home = () => {
-  return (
-    <HomeContainer>
-      <Title>Welcome to our Twitter Users site!</Title>
-      <DiscoverLink to="/tweets">Discover</DiscoverLink>
-      <Description>twitter users you may know!</Description>
-    </HomeContainer>
-  );
-};
-
-export default Home;

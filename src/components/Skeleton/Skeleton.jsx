@@ -1,7 +1,7 @@
 import React from 'react';
 import { Item, Wrapper } from './Skeleton.styled';
 
-const Skeleton = ({ count = 3 }) => {
+export const Skeleton = ({ count = 3 }) => {
   const items = [];
 
   for (let i = 0; i < count; i++) {
@@ -10,5 +10,3 @@ const Skeleton = ({ count = 3 }) => {
 
   return <Wrapper>{items}</Wrapper>;
 };
-
-export default Skeleton;

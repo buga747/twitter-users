@@ -1,40 +1,15 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import {
+  DropdownButton,
+  DropdownContainer,
+  DropdownContent,
+  DropdownOption,
+} from './DropDownMenu.styled';
 
-const DropdownContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
-const DropdownButton = styled.button`
-  background-color: #4caf50;
-  color: white;
-  padding: 12px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-`;
-
-const DropdownContent = styled.div`
-  position: absolute;
-  z-index: 1;
-`;
-
-const DropdownOption = styled.a`
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f1f1f1;
-  }
-`;
-
-function Dropdown({ options, onSelect }) {
-  const [isOpen, setIsOpen] = React.useState(false);
+export const Dropdown = ({ options, value, onSelect }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleClick = () => setIsOpen(!isOpen);
 
@@ -43,30 +18,48 @@ function Dropdown({ options, onSelect }) {
     setIsOpen(false);
   };
 
+  const handleClickOutside = event => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, []);
+
   return (
-    <DropdownContainer>
+    <DropdownContainer ref={dropdownRef}>
       <DropdownButton onClick={handleClick}>
-        Select an option &#9662;
+        Select users to show:{' '}
+        {options.find(option => option.value === value)?.label}
       </DropdownButton>
       {isOpen && (
         <DropdownContent>
           {options.map(option => (
             <DropdownOption
-              key={option}
-              onClick={() => handleOptionClick(option)}
+              key={option.value}
+              onClick={() => handleOptionClick(option.value)}
             >
-              {option}
+              {option.label}
             </DropdownOption>
           ))}
         </DropdownContent>
       )}
     </DropdownContainer>
   );
-}
-
-Dropdown.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onSelect: PropTypes.func.isRequired,
 };
 
-export default Dropdown;
+Dropdown.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
+  value: PropTypes.string.isRequired,
+  onSelect: PropTypes.func.isRequired,
+};
