@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   AvatarWrapper,
@@ -12,47 +12,30 @@ import logo from '../../assets/images/logo.png';
 import image from '../../assets/images/bg-img.png';
 import { updateUser } from 'services/TweetsApi';
 import { addCommasToNumber } from 'utils/addCommasToNumber';
+import { TailSpin } from 'react-loader-spinner';
 
 export function UsersListItem({ twiUser }) {
   const [twitterUser, setTwitterUser] = useState(twiUser);
-  const { id, followers, user, tweets, avatar } = twitterUser;
+  const { followers, user, tweets, avatar, isFollowed } = twitterUser;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(
-    JSON.parse(localStorage.getItem(`isFollowing-${id}`)) || false
-  );
   const followersString = addCommasToNumber(followers);
 
-  useEffect(() => {
-    localStorage.setItem(`isFollowing-${id}`, JSON.stringify(isFollowing));
-  }, [id, isFollowing]);
-
-  const handleFollowClick = () => {
-    if (!isFollowing) {
-      setTwitterUser(prev => ({
-        ...prev,
-        followers: prev.followers + 1,
-      }));
-      setIsFollowing(true);
-    } else {
-      setTwitterUser(prev => ({
-        ...prev,
-        followers: prev.followers - 1,
-      }));
-      setIsFollowing(false);
-    }
-
-    const updateData = async () => {
-      try {
-        setIsLoading(true);
-        await updateUser(twitterUser);
-      } catch (e) {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
+  const handleFollowClick = async () => {
+    const updatedUser = {
+      ...twitterUser,
+      followers: isFollowed ? followers - 1 : followers + 1,
+      isFollowed: !isFollowed,
     };
-    updateData();
+    setIsLoading(true);
+    try {
+      await updateUser(updatedUser);
+      setTwitterUser(updatedUser);
+    } catch (e) {
+      setError(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -65,20 +48,29 @@ export function UsersListItem({ twiUser }) {
       <InfoWrapper>
         <InfoText> {tweets} tweets</InfoText>
         <InfoText> {followersString} followers</InfoText>
-      </InfoWrapper>{' '}
-      {error ? (
-        <p>Error</p>
-      ) : (
-        <FollowButton
-          type="button"
-          disabled={isLoading}
-          name="follow"
-          onClick={handleFollowClick}
-          isFollowing={isFollowing}
-        >
-          {isFollowing ? 'Following' : 'Follow'}
-        </FollowButton>
-      )}
+      </InfoWrapper>
+      <FollowButton
+        type="button"
+        disabled={isLoading}
+        name="follow"
+        onClick={handleFollowClick}
+        isFollowing={isFollowed}
+      >
+        {isLoading ? (
+          <TailSpin
+            height={24}
+            width={24}
+            color="#110202"
+            visible={true}
+            ariaLabel="oval-loading"
+            secondaryColor="#3b763a"
+            strokeWidth={2}
+            strokeWidthSecondary={2}
+          />
+        ) : (
+          <> {error ? 'Error' : isFollowed ? 'Following' : 'Follow'}</>
+        )}
+      </FollowButton>
     </Item>
   );
 }
@@ -90,5 +82,6 @@ UsersListItem.propTypes = {
     user: PropTypes.string.isRequired,
     tweets: PropTypes.number.isRequired,
     avatar: PropTypes.string.isRequired,
+    isFollowed: PropTypes.bool.isRequired,
   }).isRequired,
 };
