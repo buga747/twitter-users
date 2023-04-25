@@ -8,8 +8,8 @@ import {
   Item,
   Logo,
 } from './UserListItem.styled';
-import logo from '../../assets/images/logo.png';
-import image from '../../assets/images/bg-img.png';
+import logo from '../../images/logo.png';
+import image from '../../images/bg-img.png';
 import { addCommasToNumber } from 'utils/addCommasToNumber';
 import { TailSpin } from 'react-loader-spinner';
 

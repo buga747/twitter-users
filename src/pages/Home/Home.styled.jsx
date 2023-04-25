@@ -12,7 +12,8 @@ export const HomeContainer = styled.div`
 export const Title = styled.h1`
   font-size: 3rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: #2b0505;
+  z-index: 5;
 `;
 
 export const DiscoverLink = styled(Link)`
@@ -23,7 +24,7 @@ export const DiscoverLink = styled(Link)`
   border-radius: 5px;
   text-decoration: none;
   transition: all 0.3s ease;
-
+  z-index: 5;
   &:hover {
     background-color: #0c8de4;
   }
@@ -31,7 +32,8 @@ export const DiscoverLink = styled(Link)`
 
 export const Description = styled.span`
   font-size: 1.5rem;
-  color: #666;
+  color: #0f0606;
   margin-top: 1rem;
   text-transform: uppercase;
+  z-index: 5;
 `;

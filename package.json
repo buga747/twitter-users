@@ -15,9 +15,12 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-loader-spinner": "^5.3.4",
+    "react-particles": "^2.9.3",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.9",
+    "tsparticles": "^2.9.3",
+    "tsparticles-updater-destroy": "^2.9.3",
     "web-vitals": "^2.1.3"
   },
   "scripts": {

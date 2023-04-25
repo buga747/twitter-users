@@ -17,6 +17,7 @@ export const Header = styled.header`
 
   > nav {
     display: flex;
+    z-index: 100;
   }
 `;
 
